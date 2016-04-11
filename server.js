@@ -10,6 +10,7 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 var configDB = require('./config/database.js')
 
+
 mongoose.connect(configDB.url); //connect to database
 require('./config/passport')(passport); //pass passport for config
 app.use(morgan('dev'));	 //log console requests
@@ -26,4 +27,4 @@ app.use(flash());
 require('./app/routes.js')(app,passport,mongoose);
 app.listen(port);
 
-console.log('The connection happen on port: '+port);
+console.log('The connection happens on port: '+port);

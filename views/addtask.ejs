@@ -18,7 +18,7 @@
 
     <div class="row">
 
-        <!-- LOCAL INFORMATION -->
+        
         <div class="col-sm-12">
             <div class="well">
                 <h3><span class="fa fa-user"></span>Local</h3>
@@ -26,6 +26,21 @@
                     <p>
                         <strong>username</strong>: <%= user.local.username %><br>
                         <p><a href="/profile">Current Tasks</a>&nbsp&nbsp&nbsp&nbsp<a href="/addtask">Add Task</a></p>
+                        <form action="/addtask" method="post">
+                            <div class="form-group">
+                                <label>Task Details</label>
+                                <input type="text" class="form-control" name="task_detail">
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" class="form-control" name="location">
+                            </div>
+                            <div class="form-group">
+                                <label>Due time</label>
+                                <input type="text" class="form-control" name="duetime">
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-lg">Add</button>
+                        </form>
                     </p>
 
             </div>
