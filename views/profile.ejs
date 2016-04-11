@@ -26,6 +26,12 @@
                     <p>
                         <strong>username</strong>: <%= user.local.username %><br>
                         <p><a href="/profile">Current Tasks</a>&nbsp&nbsp&nbsp&nbsp<a href="/addtask">Add Task</a></p>
+                        <% todos.forEach( function ( todo ){ %>
+                          <div class="item">
+                            <a class="update-link" href="/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+                            <a class="del-btn" href="/destroy/<%= todo._id %>" title="Delete this todo item">Delete</a>
+                          </div>
+                        <% }); %>
                     </p>
 
             </div>
