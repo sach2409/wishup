@@ -1,4 +1,4 @@
-var geohash = require("geohash").GeoHash;
+// var geohash = require("geohash").GeoHash;
 var Todo = require('../app/models/tasks');
 module.exports = function(app,passport,mongoose){
 	app.get('/',function(req,res){
@@ -39,42 +39,49 @@ module.exports = function(app,passport,mongoose){
       }).save( function ( err, todo, count ){
         if( err ) return next( err );
 
-        console.log("stored data");
+        // console.log("stored data");
         res.redirect('/addtask');
       });
     });
     app.post('/profile',isLoggedIn, function ( req, res, next ){
-      // var user_id = req.cookies ?
-      //   req.cookies.user_id : undefined;
-
       Todo.
         find({ user_id : req.user }).
         sort( '-due_time' ).
-        exec( function ( err, todo ){
+        exec( function ( err, todos ){
           if( err ) return next( err );
-
-          res.render( '/profile', {
-              user : req.user,
-              todos: todo
-          });
+          res.send('/profile',{todos:todos});
+          // res.render( '/profile', {
+          //     user : req.user,
+          //     todos: todos
+          // });
         });
     });
+    // app.get("/addtask/:id", isLoggedIn, function (req,res){
+    //     //decode the geohash with geohash module
+    //     var latlon = geohash.decodeGeoHash(req.params["id"]);
+    //     console.log("latlon : " + latlon);
+    //     var lat = latlon.latitude[2];
+    //     console.log("lat : " + lat);
+    //     var lon = latlon.longitude[2];
+    //     console.log("lon : " + lon);
+    //     zoom = req.params["id"].length + 2;
+    //     console.log("zoom : " + zoom);
+    //             // now we use the templating capabilities of express and call our template to render the view, and pass a few parameters to it
+    //     res.render("gmaps.ejs", { layout: false, lat:lat, lon:lon, zoom:zoom, geohash:req.params["id"]});
+    // });
+
+    /*facebook*/
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/profile',
+            failureRedirect : '/'
+        }));
+
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/'); //redirect to home
-    });
-    app.get("/addtask/:id", isLoggedIn, function (req,res){
-        //decode the geohash with geohash module
-        var latlon = geohash.decodeGeoHash(req.params["id"]);
-        console.log("latlon : " + latlon);
-        var lat = latlon.latitude[2];
-        console.log("lat : " + lat);
-        var lon = latlon.longitude[2];
-        console.log("lon : " + lon);
-        zoom = req.params["id"].length + 2;
-        console.log("zoom : " + zoom);
-                // now we use the templating capabilities of express and call our template to render the view, and pass a few parameters to it
-        res.render("gmaps.ejs", { layout: false, lat:lat, lon:lon, zoom:zoom, geohash:req.params["id"]});
+        res.redirect('/');
     });
 };
 
